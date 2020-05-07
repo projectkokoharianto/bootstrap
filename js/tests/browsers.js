@@ -2,13 +2,6 @@
 /* eslint-disable camelcase */
 
 const browsers = {
-  safari9Mac: {
-    base: 'BrowserStack',
-    os: 'OS X',
-    os_version: 'El Capitan',
-    browser: 'Safari',
-    browser_version: '9.1'
-  },
   safari10Mac: {
     base: 'BrowserStack',
     os: 'OS X',
