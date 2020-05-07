@@ -37,11 +37,15 @@ sh.cp('-Rf', [
 ], folderName)
 sh.rm(`${folderName}/index.html`)
 
-// sed-fu
+// get all example HTML files
 sh.find(`${folderName}/**/*.html`).forEach(file => {
-  sh.sed('-i', new RegExp(`"/docs/${versionShort}/`, 'g'), '"../', file)
-  sh.sed('-i', /(<link href="\.\.\/.*) integrity=".*>/g, '$1>', file)
-  sh.sed('-i', /(<script src="\.\.\/.*) integrity=".*>/g, '$1></script>', file)
+  const fileContents = sh.cat(file)
+    .toString()
+    .replace(new RegExp(`"/docs/${versionShort}/`, 'g'), '"../')
+    .replace(/(<link href="\.\.\/.*) integrity=".*>/g, '$1>')
+    .replace(/(<script src="\.\.\/.*) integrity=".*>/g, '$1></script>')
+    .replace(/( +)<!-- favicons(.|\n)+<style>/i, '    <style>')
+  new sh.ShellString(fileContents).to(file)
 })
 
 // create the zip file
